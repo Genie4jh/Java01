@@ -1,0 +1,393 @@
+# 어제 수업 마지막 토픽 게시판 만들기에 이어서 진행
+
+
+
+
+**만들어진 클래스 이용
+1. 내가 원하는 기능을 가진 클래스를 찾기
+
+2. 내가 원하는 기능을 수행해주는 메소드를 찾기
+=> static 인지 아닌지 확인: 
+	- static 이라면 instance를 생성할 필요가 없음
+	- static 이 아니라면 instance를 생성해야 하므로 생성자(constructor)를 다시 확인
+
+=> method의 parameter를 확인
+parameter는 method에게 일을 시킬 때 method가 사용할 데이터입니다.
+필요한 데이터를 제공하지 않으면 method는 일을 하지 않거나 에러를 발생
+
+=> return type을 확인
+직업을 수행하고 어떤 결과를 돌려주는지 확인
+
+
+
+
+# ==============================================================
+
+**package & import
+
+1. package
+=> 관련있는 class의 모임
+=> 파일 시스템에서는 하나의 디렉토리
+=> package 가 배포 단위
+=> 클래스는 실행은 가능하지만 배포를 할 수 없습니다. 
+=> 자바에서는 class들을 다른 프로젝트에서 사용하도록 배포하고자 할 때는 
+class들을 package로 묶에서 jar 로 압축해서 전달하면 됩니다. 
+
+
+2. Java의 class 로드
+=> Java는 실행되는 프로그램에 존재하는 모든 class들을 JVM에 로드하고 실행
+=> Java에서는 존재하는 모든 class를 별도의 작업이 없이 바로 사용이 가능
+=> 사용할 때는 class의 전채 경로를 입력해야 합니다.
+	> package이름.class 의 형태로 사용해야 합니다. 
+
+
+3. import
+=> import 는 가져오는 개념이 아니고 줄여쓰기 위한 개념입니다.
+=> class를 만들기 전 상단 부분에 import를 해주면 package 이름을 생략하고 
+class를 사용할 수 있습니다. 
+
+1) package이름.*
+=> package 에 존재하는 모든 class 들을 package 이름을 생략하고 사용 가능
+
+2) package이름.class이름
+=> class이름에 해당하는 class만 package 이름을 생략하고 사용 가능
+
+3) ex
+Scanner의 원래 이름은 java.util.Scanner
+java.util.Scanner sc = new java.util.Scanner(System.in);
+
+=> 위처럼 작성하면 너무 길어서 import 하고 사용
+import.jave.util.Scanner;
+Scanner sc = new Scanner(System.in);
+
+=> Eclipse에서는 class 이름만 사용한 경우 class 이름에 커서를 갖다대면 import 해주겠다는 메시지가
+보이고 이를 클릭하면 자동으로 import 구문이 입력됩니다. 
+
+4) import 할 때 주의할 점
+=> class를 찾을 때 자바는 현재 프로젝트에서 찾고 없으면 다른 package에서 찾습니다.
+제공되는 class와 동일한 이름의 class를 만들면 제공되는 class를 사용할 때는 package이름을
+전부 입력해서 사용해야 합니다. 
+왠만해서는 제공되는 class와 동일한 이름의 class를 만들지 않는 것이 좋습니다.
+
+=> 서로 다른 package에 동일한 이름의 class가 존재하는 경우가 있는데 프로젝트 내에서 
+2개의 class를 모두 사용할 때는 하나의 package 이름을 전부 입력하는 것이 좋습니다. 
+
+java.util.Date 와 java.sql.Date 의 경우 모두 사용하는 경우에 하나는 전체 경로를 입력하는 것이 좋습니다.
+
+5) 자바 application을 개발할 때 import 하지 않아도 java.lang package는 이미 import가 되어 있어서
+class 이름만 이용하면 됩니다. 
+
+
+
+** 상속 (Inheritance)
+
+1. 개념
+=> 하위 클래스가 상위 클래스의 모든 것을 물려받는 것
+=> 물려받는 class를 하위(Sub) class라고 하는데 다른 용어로는 Derived(파생 클래스) class라고도 하고 
+물려주는 class를 상위(Super) class라고 하는데 다른 용어로는 Based(기반 클래스) class라고도 합니다. 
+
+=> 자주 사용하는 Superclass 들을 파악해서 프로그램을 만들기 쉽게 제공해주는 것을 framework 또는
+engine 이라고 부릅니다. 
+윈도우 용 프로그램 개발 framework로 가장 유명한 것이 VC#, VC++ (MFC)
+Java 개발 framework로 유명한 것은 Spring
+
+
+2. Inheritance 를 이용했을 때의 장점
+=> 코드를 간결하게 만들 수 있기 때문에 유지보수가 편리해집니다. (최대 이유)
+
+=> 재사용성이 증가
+
+
+3. 단점
+=> Superclass 의 내용을 변경하면 Subclass도 영향을 받게됩니다. 
+Subclass는 Superclass에 종속됩니다. 
+
+
+4. Inheritance를 관계로 표현할 때는 is a 관계라고 합니다. 
+
+
+5. Java는 단일 상속만 지원합니다. 
+Java의 모든 class는 하나의 class로부터만 inherit 받을 수 있습니다. 
+
+
+6. Java의 모든 class 는 java.lang.Object 라는 class 로부터 inherit 받습니다.
+
+
+7. Java에서 inherit 방법
+class 클래스이름 extends 상위클래스이름 {
+
+}
+
+
+8. 접근지정자 (Access Modifier)와 Inheritance
+private: inherit은 되지만 Subclass에서 접근 할 수 없음 (사용 불가)
+default(package): 동일한 package 내에서는 Subclass에서 Superclass의 member를 사용할 수 있고
+서로 다른 package에서는 사용이 불가능
+
+protected: Subclass에서 사용 가능
+
+public: Subclass에서 사용 가능하고 Instance도 사용 가능
+
+
+9. Inheritance와 Access Modifier
+
+1) Superclass로 사용할 Based class
+
+public class _01_Based {
+	private int num;	// 자신의 클래스 내부에 있는 메소드 안에서만 사용이 가능
+	
+	String title;	// 접근 지정자를 설정하지 않는 것을 default 또는 package
+	// 클래스 내부의 메소드에서 사용가능하고
+	// 동일한 패키지 내에 있으면 public 처럼 상속받은 클래스 그리고 인스턴스가 사용 가능
+	
+	protected String content;
+	// default 에 다른 패키지에서도 inherit 받은 class에서는 사용이 가능
+	
+	public int readcnt;	// 자신의 클래스 그리고 상속받은 클래스와 인스턴스가 사용 가능
+
+}
+
+
+2) Based class로부터 inherit한 Derived class
+
+// Based class를 상속받은 Derived class
+public class _02_Derived extends _01_Based {
+	
+	// Method
+	public void disp() {
+		// num = 10;	// num은 private 멤버라서 보이지 않는다고 에러 메시지
+		// protected로 변경할 것인지 물어봅니다.
+		
+		title = "제목";
+		content = "내용";
+		readcnt = 0;
+		
+	}
+}
+
+=> inheritance를 받을 때는 class를 만들 때 Superclass에 입력해도 되고 class를 만든 후 직접 extends
+Superclass 이름을 입력해도 됩니다. 
+
+
+10. Super
+1) instance method에서의 super
+=> instance method 안에서 어떤 이름을 사용하면 method 안에서 먼저 찾고, 
+없으면 method 외부에서 찾으며, 그래도 없으면 Superclass에서 이름을 찾습니다.
+
+Superclass에도 없으면 undefined 되었다고 에러 메시지 출력
+
+=> method 안에서 찾지 않고 method 외부에서 부터 찾고자 할 때는 this. 를 앞에 붙이면 됩니다.
+this가 붙으면 method 안에서는 찾지 않고 method 외부의 class에서 먼저 찾고, 없으면 Superclass에서 찾습니다.
+
+=> this. 대신에 super. 를 붙이면 자신의 class에서도 찾지 않고 Superclass에서만 찾습니다. 
+
+=> this를 사용해야만 하는 경우는 method 내에 만든 variable과 class에 만들어진 variable 이름이 같을 때,
+class에 만들어진 variable을 사용할 때 이용
+super는 current class와 Superclass에 동일한 이름의 method가 있을 때, Superclass의 method를
+호출하기 위해서 사용합니다. 
+
+
+# 실습
+=> class Based에 print()를 생성
+public void print() {
+		System.out.println("Superclass의 print");
+	}
+
+
+=> class Derived에 print()를 생성
+public void method() {
+		print();	// 앞에 아무것도 붙지 않았기 때문에 자신의 class에서부터 찾아 갑니다.
+		// 자신의 class에서 만든 print()
+		System.out.println("====================");
+		
+		super.print();  // Superclass에서 print()를 찾습니다.
+		// Based에 만든 print()
+	}
+
+=> main 메소드르 소유한 실행 class를 만들어서 class Derived의 method()를 호출
+public class _03_Main {
+
+	public static void main(String[] args) {
+		// class Derived의 method()를 호출
+		
+		// Derived instance를 생성
+		_02_Derived d = new _02_Derived();
+		
+		// Method 호출
+		d.method();
+	}
+}
+
+
+2) constructor에서의 super()
+=> constructor에 첫번째 줄은 작성을 하지 않더라도 super() 입니다.
+Superclass에 parameter가 없는 constructor를 호출하는 구문입니다. 
+=> class Based를 상속받은 class Derived에 constructor를 만들지 않더라도 아래와 같은 constructor가 존재
+public Derived() {
+	super();	// 이 구문은 new Based(); 와 동일한 구문
+}
+
+=> Based에 constructor를 만들고 super()를 호출하지 않으면 자동으로 super()가 삽입됩니다.
+
+=> 상속을 받으면 Superclass의 모든 멤버를 상속받아서 생성해야 합니다.
+Superclass의 멤버를 생성하려면 Superclass의 constructor를 호출해야 합니다.
+코드 상 호출하지 않더라도 무조건 해야 하기 때문에 자바에서는 자동으로 삽입해줍니다. 
+
+=> Superclass에 parameter가 없는 생성자(default constructor)가 없으면 Subclass에 constructor를 만들어서
+Superclass의 constructor를 직접 호출해야 합니다. 
+
+
+11. polymorphism (다형성) <- 꼭 외워야함!!!!!
+
+1) method overriding (메소드 재정의)
+=> Superclass에 존재하는 method를 Subclass에서 다시 만드는 것
+=> method 이름이 같고 parameter 개수와 자료형이 같은 method를 다시 만드는 것
+=> parameter의 개수나 자료형이 다르면 method overloading (메소드 중복정의)
+=> 하는 이유는 자신이 만든 class의 경우는 polymorphism 구현을 위해서 이고 프레임워크가 제공하는
+class 가 Superclass인 경우는 기능확장을 위해서 입니다. 
+
+2) 프레임워크가 제공하는 class를 상속받아서 사용하는 경우
+=> 프레임웤가 제공하는 class는 기본 기능만 제공해주기 때문에 기본 기능을 확장하기 위해서 상속을 받아서 사용
+=> 기본 기능을 확장할 때 method overriding을 사용하는데, 이 때 Superclass의 method를 호출 해주어야 합니다. 
+
+/*
+Button 클래스 제공
+  - Button을 누르면 동작하는 click 이라는 method를 제공
+
+Button을 상속받는 ButtonEx 라는 class를 생성
+  - Button을 누르면 동작하는 메소드 : click
+
+
+public void method() {
+	super.method();
+	// 추가하고자 하는 기능
+}
+*/
+
+=> Superclass의 method 호출 시점은 정리를 하는 method를 제외하고는 Superclass의 method를 먼저 호출합니다.
+정리하는 method는 Superclass의 method를 나중에 호출합니다. 
+=> Android Studio 같은 경우에는 자신이 제공하는 class를 상속받아서 method overriding 할 때
+Superclass의 method를 호출하지 않으면 에러 발생하고 VC+++ 같은 곳에서는 method overriding 할 때
+Superclass의 method를 호출하는 구문이 자동 삽입됩니다. 
+
+3) @Override
+@이 붙는 것은 자바에서는 annotation 이라고 하고 Python에서는 decorator 라고 합니다.
+어노테이션은 자주 사용하는 자바 코드를 매번 작성하는 것이 번거롭기 때문에 이 어노테이션을
+추가하면 자바가 컴파일을 할 때 자동으로 코드를 삽입해주는 것입니다. 
+
+@Override 는 이 method가 method overriding 된 것을 알려주기 위한 annotation.
+이 어노테이션을 붙였는데 이 method가 Superclass에 없으면 에러가 발생합니다. 
+
+프로그램의 가독성을 높이기 위해서 오버라이딩 한 경우에는 붙여주는 것이 좋습니다. 
+
+4) 객체 지향 언어에서의 reference type 사이의 대입
+=> C나 Java와 같은 static 자료형 언어들은 variable을 선언할 때 사용한 자료형의 데이터만 variable에 대입할 수 있습니다.
+int a = 10;
+// a에는 정수만 대입이 가능합니다. 
+
+=> reference type 에서는 한가지 예외가 있습니다.
+Superclass 타입으로 만들어진 변수에 Subclass 타입의 instance 참조를 대입할 수 있습니다. 
+
+Subclass 타입으로 만들어진 variable에 Superclass 타입의 instance 참조는 대입할 수 없는데,
+강제 형 변환을 하면 대입이 되고 문법적인 에러는 없습니다. 
+그렇지만, 원래의 자료형이 Subclass 타입이 아니면 실행할 때 예외가 발생합니다. 
+
+Based, Based를 상속받은 Derived가 본재
+Based obj = new Based();	// Based로 만든 변수에 Based instance를 대입 - 에러 없음
+Derived ins = new Derived();		// 에러 없음
+
+Based o = new Derived(); 	// 이게 가능한 이유는 Derived가 Based로부터 상속을 받았기 때문에 가능
+Derived d = new Based();	// 이 문장은 에러. Based가 Derived의 Subclass가 아니어서 에러
+
+Derived d1 = (Derived)(new Based());	// 강제 형 변환을 해서 에러는 아님 - 실행 시 에러
+Derived d2 = (Derived)(o);		// 강제 형 변환을 해서 에러는 아님 - 실행 시 에러 아님
+
+
+5) 참조형 변수의 멤버 호출
+=> 참조형 변수는 변수를 선언할 때 사용한 자료형의 멤버만 호출이 가능합니다.
+Based o = new Derived();
+o 는 Based에 존재하는 것만 호출할 수 있습니다.
+Based는 없고 Derived에만 존재하는 것은 호출할 수 없습니다. 
+
+=> 예외적으로 overriding된 메소드는 instance를 만들 때 사용한 생성자의 것을 호출합니다.
+o가 overriding된 메소드를 호출할 때는 Based의 것이 호출되는 것이 아니고 Derived의 것이 호출됩니다. 
+
+6) polymorphism (다형성)
+=> OOL에서는 다형성이 동일한 메시지에 대하여 다르게 반응하는 성질
+=> 동일한 코드가 대입된 instance에 따라 다른 메소드를 호출하는 것
+
+
+12. 다형성 구현 실습
+1) 다형성과 상관없이 Terran, Zerg, Protoss의 공격 메소드를 생성 Main에서 실행하는 코드듣 작성하고 실행
+
+=> Terran 클래스를 생성하고 attack 메소드를 구현
+public class Terran {
+	// 테란의 공격 메소드
+	public void attack() {
+	System.out.println("인류 테란의 총군세 반격!!!");
+	}
+}
+
+=> Protoss 클래스를 생성하고 attack 메소드를 구현
+public class Protoss {
+	// 프로토스 공격 메소드
+	public void attack() {
+		System.out.println("공허의 유산을 찾는 것이 영광을 되찾는길 For Aiur!");
+	}
+}
+
+=> Zerg 클래스를 생성하고 attack 메소드를 구현
+public class Zerg {
+	// 저그의 공격 메소드
+	public void attack() {
+		System.out.println("칼날 여왕이 모든 것을 지배할 것이다");
+	}
+}
+
+=> main 메소드를 소유한 실행 클래스를 만들고 3개 클래스의 attack을 호출하는 코드를 작성
+public class Main {
+
+	public static void main(String[] args) {
+		Terran t = new Terran();
+		t.attack();
+		
+		Protoss p = new Protoss();
+		p.attack();
+		
+		Zerg z = new Zerg();
+		z.attack();
+
+	}
+
+
+2) 위까지 실행하면 3개의 메소드를 호출할 수 있습니다.
+지금은 3개 클래스의 인스턴스를 가지고 메소드를 호출하기 위해서 
+3개의 변수에 각각의 인스턴스를 대입해서 메소드를 호출했습니다.
+
+메소드를 호출하는 코드가 다릅니다. 인터페이스에 메소드를 연결하려고 하면 3개의 명령어가 필요합니다. 
+
+하나의 명령어로 3개 메소드를 모두 호출할 수 있도록 하기 위해서 동일한 코드가 3개의 메소드를 호출할 수 있도록 변경
+
+=> Terran, Protoss, Zerg 클래스의 인스턴스를 모두 저장할 수 있는 변수를 만들기 위해서
+3개 클래스에 상속할 상위 클래스를 생성하고 메소드를 오버라이딩 할 수 있도록 attack을 구현
+
+=> Terran, Protoss, Zerg 클래스에 Starcraft_super 클래스를 상속하도록 클래스 선언문 수정
+public class Terran extends Starcraft
+
+public class Protoss extends Starcraft
+
+public class Zerg extends Starcraft
+
+=> main 메소드 수정
+	public static void main(String[] args) {
+		Starcraft_super star = new Terran();
+		star.attack();
+		
+		star = new Protoss();
+		star.attack();
+		
+		star = new Zerg();
+		star.attack();
+	}
+
+
